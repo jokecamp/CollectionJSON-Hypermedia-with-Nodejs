@@ -20,10 +20,11 @@ function handler(req, res) {
         path = '/';
     }
 
-	getFriends();
-	createCjTemplate();
-	renderItems(friends);
+    getFriends();
+    createCjTemplate();
+    renderItems(friends);
     renderQueries();
+    renderTemplate();
 
     res.writeHead(200, 'OK', {'content-type':cType});
     res.end(JSON.stringify(cj));
@@ -142,6 +143,34 @@ function renderQueries() {
     query.prompt = 'Sort by Email';
     query.href = base + '/sortbyemail';
     cj.collection.queries.push(query);
+}
+
+// render write template (POST, PUT)
+function renderTemplate() {
+    var template = {};
+    var item = {};
+
+    template.data = [];
+
+    item = {};
+    item.name = 'name';
+    item.value = '';
+    item.prompt = 'Name';
+    template.data.push(item);
+
+    item = {};
+    item.name = 'email';
+    item.value = '';
+    item.prompt = 'Email';
+    template.data.push(item);
+
+    item = {};
+    item.name = 'blog';
+    item.value = '';
+    item.prompt= 'Blog';
+    template.data.push(item);
+
+    cj.collection.template = template;
 }
 
 http.createServer(handler).listen(port);
